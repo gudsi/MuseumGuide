@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item android:id="@+id/area"
+        android:icon="@mipmap/ic_launcher"
+        android:title="Art in my area"/>
+    <item android:id="@+id/find"
+        android:icon="@mipmap/ic_launcher"
+        android:title="Find Art"/>
+    <item android:id="@+id/inspect"
+        android:icon="@mipmap/ic_launcher"
+        android:title="Inspect Area"/>
+    <item android:id="@+id/museum"
+        android:icon="@mipmap/ic_launcher"
+        android:title="List of Art in our Museum"/>
+</menu>
