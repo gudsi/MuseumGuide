@@ -13,6 +13,9 @@ import com.squareup.picasso.Picasso;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.nio.file.Path;
+import java.nio.file.Paths;
+
 
 public class ShowArtefactActivity extends AppCompatActivity {
 
@@ -21,7 +24,7 @@ public class ShowArtefactActivity extends AppCompatActivity {
 
     String artefactNr = "";
     String url = "http://museum4all.integriert-studieren.jku.at/rest/artefacts";
-    String img_url = "http://museum4all.integriert-studieren.jku.at/sites/default/files/";
+    String img_url = "http://museum4all.integriert-studieren.jku.at/sites/default/files";
     String img_path;
 
     @Override
@@ -50,7 +53,7 @@ public class ShowArtefactActivity extends AppCompatActivity {
                         description = new JSONObject(myResponse).getJSONObject(artefactNr.toString());
                         title.setText(description.getString("short_desc"));
                         location.setText(description.getString("location"));
-                        img_path = description.get("picture").toString();
+
                         String i = description.getString("long_desc");
                         byte[] data = Base64.decode(description.getString("long_desc"), Base64.DEFAULT);
                         String tmp = new String(data, "UTF-8");
@@ -59,6 +62,17 @@ public class ShowArtefactActivity extends AppCompatActivity {
                         } else {
                             longDesc.setText(Html.fromHtml(tmp));
                         }
+                        img_path = description.get("picture").toString();
+                        Path path = Paths.get(img_path);
+                        int r = path.toString().indexOf(':');
+                        String hopi = path.toString().substring(r + 1);
+                        img_url = img_url.concat(hopi);
+                        System.out.println(img_url);
+                        ShowArtefactActivity.this.runOnUiThread(new Runnable() {
+                            public void run() {
+                                Picasso.get().load(img_url).into(image);
+                            }
+                        });
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
@@ -68,8 +82,5 @@ public class ShowArtefactActivity extends AppCompatActivity {
                 }
             }
         }).start();
-        //TODO
-      //  img_url.concat(img_path);
-        Picasso.get().load(img_url).into(image);
     }
 }

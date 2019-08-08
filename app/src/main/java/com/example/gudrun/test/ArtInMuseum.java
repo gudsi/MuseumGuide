@@ -18,8 +18,7 @@ public class ArtInMuseum extends AppCompatActivity {
 
     String url = "http://museum4all.integriert-studieren.jku.at/rest/artefacts";
 
-    Button getArtButton;
-
+    ListAdapterView adapter;
     ListView artList;
     String viewArtefacts = "";
 
@@ -32,8 +31,6 @@ public class ArtInMuseum extends AppCompatActivity {
         setContentView(R.layout.activity_art_in_museum);
 
         artList = (ListView) findViewById(R.id.artList);
-        getArtButton = (Button) findViewById(R.id.getButton);
-
 
         final NetworkAsyncTask httpTask = new NetworkAsyncTask(url);
         httpTask.execute();
@@ -53,6 +50,12 @@ public class ArtInMuseum extends AppCompatActivity {
                             Object tmp = artefacts.getJSONObject(nodeID);
                             viewArtefacts = ((JSONObject) tmp).getString("short_desc");
                             listItems.add(viewArtefacts);
+                            ArtInMuseum.this.runOnUiThread(new Runnable() {
+                                public void run() {
+                                    adapter = new ListAdapterView(ArtInMuseum.this, listItems);
+                                    artList.setAdapter(adapter);
+                                }
+                            });
                         }
                     } catch (JSONException e) {
                         e.printStackTrace();
@@ -62,14 +65,6 @@ public class ArtInMuseum extends AppCompatActivity {
                 }
             }
         }).start();
-
-        getArtButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                ArrayAdapter<String> adapter = new ArrayAdapter<String>(ArtInMuseum.this, android.R.layout.simple_list_item_1, listItems);
-                artList.setAdapter(adapter);
-            }
-        });
 
         artList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override

@@ -4,12 +4,14 @@
     <item android:id="@+id/area"
         android:icon="@mipmap/ic_launcher"
         android:title="Art in my area"/>
-    <item android:id="@+id/find"
-        android:icon="@mipmap/ic_launcher"
-        android:title="Find Art"/>
-    <item android:id="@+id/inspect"
-        android:icon="@mipmap/ic_launcher"
-        android:title="Inspect Area"/>
+    <item
+        android:id="@+id/find"
+        android:icon="@android:drawable/ic_menu_search"
+        android:title="Find Art" />
+    <item
+        android:id="@+id/inspect"
+        android:icon="@android:drawable/ic_menu_zoom"
+        android:title="Inspect Area" />
     <item android:id="@+id/museum"
         android:icon="@mipmap/ic_launcher"
         android:title="List of Art in our Museum"/>

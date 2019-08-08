@@ -75,6 +75,16 @@ public class FindArtActivity extends AppCompatActivity implements SearchView.OnQ
 
         simpleSearchView = findViewById(R.id.search_view);
         simpleSearchView.setOnQueryTextListener(this);
+
+        list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                //Toast.makeText(getApplicationContext(), "Item Clicked:" + i, Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(getApplicationContext(), ShowArtefactActivity.class);
+                intent.putExtra("artefact", nodeIDList.get(i));
+                startActivity(intent);
+            }
+        });
     }
 
     @Override
@@ -85,15 +95,6 @@ public class FindArtActivity extends AppCompatActivity implements SearchView.OnQ
     @Override
     public boolean onQueryTextChange(String newText) {
         adapter.filter(newText);
-        list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                Toast.makeText(getApplicationContext(), "Item Clicked:" + i, Toast.LENGTH_SHORT).show();
-                Intent intent = new Intent(getApplicationContext(), ShowArtefactActivity.class);
-                intent.putExtra("artefact", nodeIDList.get(i));
-                startActivity(intent);
-            }
-        });
         return false;
     }
 }

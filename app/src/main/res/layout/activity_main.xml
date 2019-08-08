@@ -9,19 +9,22 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:background="@drawable/wertdeslebens">
 
 
         <TextView
             android:id="@+id/textView"
             android:layout_width="320dp"
-            android:layout_height="308dp"
+            android:layout_height="101dp"
             android:layout_alignParentTop="true"
             android:layout_alignParentEnd="true"
-            android:layout_marginTop="71dp"
-            android:layout_marginEnd="20dp"
-            android:text="Welcome to the Museum Guide"
-            android:textSize="50dp" />
+            android:layout_marginTop="14dp"
+            android:layout_marginEnd="32dp"
+            android:text="WELCOME!"
+            android:textAlignment="center"
+            android:textSize="50dp"
+            android:textStyle="bold" />
 
 
     </RelativeLayout>
