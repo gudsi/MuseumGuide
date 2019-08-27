@@ -33,4 +33,10 @@ dependencies {
     implementation 'com.mcxiaoke.volley:library:1.0.19'
 
     implementation 'com.squareup.picasso:picasso:2.71828'
+
+    implementation 'com.estimote:proximity-sdk:1.0.3'
+    // for the latest version, see the CHANGELOG and replace "1.0.3"
+    // https://github.com/Estimote/Android-Proximity-SDK/blob/master/CHANGELOG.md
+
+    implementation 'com.estimote:mustard:0.2.1'
 }

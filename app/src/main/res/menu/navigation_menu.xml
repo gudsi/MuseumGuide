@@ -1,18 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <item android:id="@+id/area"
-        android:icon="@mipmap/ic_launcher"
-        android:title="Art in my area"/>
+    <item
+        android:id="@+id/area"
+        android:icon="@android:drawable/stat_sys_data_bluetooth"
+        android:title="Art in my area" />
     <item
         android:id="@+id/find"
         android:icon="@android:drawable/ic_menu_search"
         android:title="Find Art" />
     <item
         android:id="@+id/inspect"
-        android:icon="@android:drawable/ic_menu_zoom"
+        android:icon="@android:drawable/ic_menu_camera"
         android:title="Inspect Area" />
-    <item android:id="@+id/museum"
-        android:icon="@mipmap/ic_launcher"
-        android:title="List of Art in our Museum"/>
+    <item
+        android:id="@+id/museum"
+        android:icon="@android:drawable/ic_menu_sort_by_size"
+        android:title="List of Art in our Museum" />
 </menu>
