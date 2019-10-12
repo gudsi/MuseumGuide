@@ -68,6 +68,9 @@ public class ShowArtefactActivity extends AppCompatActivity {
                         String hopi = path.toString().substring(r + 1);
                         img_url = img_url.concat(hopi);
                         System.out.println(img_url);
+
+                        String beaconID = description.getString("beacon_id");
+
                         ShowArtefactActivity.this.runOnUiThread(new Runnable() {
                             public void run() {
                                 Picasso.get().load(img_url).into(image);
