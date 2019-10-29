@@ -36,19 +36,18 @@ public class ArtInAreaActivity extends AppCompatActivity {
     String url = "http://museum4all.integriert-studieren.jku.at/rest/artefacts";
 
     private BeaconManager beaconManager;
-    private BeaconRegion regionMint;
-    //TODO regionMint = region
+    private BeaconRegion region;
 
     ListAdapterView adapter;
     ListView artList;
     LinkedHashSet<String> listItems = new LinkedHashSet<>();
-    //ArrayList<String> listItems = new ArrayList<>();
+    ArrayList<String> nodes = new ArrayList<>();
     String artefacts;
     ArrayList<Integer> beaconsOfHTTPRequest = new ArrayList<>();
-
     Map<String, String> beaconsMajorToBID =  new HashMap<String, String>();
-
     String nodeId;
+    JSONObject description = null;
+    List<String> myList = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,10 +59,7 @@ public class ArtInAreaActivity extends AppCompatActivity {
         artList = (ListView) findViewById(R.id.artList);
         artefacts = getIntent().getStringExtra("artefacts");
 
-
-
         try {
-            JSONObject description = null;
             description = new JSONObject(artefacts).getJSONObject("artefacts");
             Iterator<String> iterator = description.keys();
             while (iterator.hasNext()) {
@@ -80,7 +76,7 @@ public class ArtInAreaActivity extends AppCompatActivity {
 
         beaconManager = new BeaconManager(this);
         beaconManager.setForegroundScanPeriod(1000, 0);
-        regionMint = new BeaconRegion("regionMint",
+        region = new BeaconRegion("region",
                 UUID.fromString("B9407F30-F5F8-466E-AFF9-25556B57FE6D"), null, null);
 
         beaconManager.setRangingListener(new BeaconManager.BeaconRangingListener() {
@@ -95,9 +91,10 @@ public class ArtInAreaActivity extends AppCompatActivity {
                     // Show list of artefacts found
                     for (int i = 0; i < list.size(); i ++) {
                         Beacon beaconInRange = list.get(i);
-                        int major = beaconInRange.getMajor();
+                        final int major = beaconInRange.getMajor();
                         nodeId = beaconsMajorToBID.get(Integer.toString(major));
                         final NetworkAsyncTask httpTask = new NetworkAsyncTask(url + "/" + nodeId);
+                        nodes.add(nodeId);
                         httpTask.execute();
                         new Thread(new Runnable() {
                             @Override
@@ -110,14 +107,14 @@ public class ArtInAreaActivity extends AppCompatActivity {
                                     try {
                                         description = new JSONObject(myResponse).getJSONObject(nodeId);
                                         listItems.add(description.getString("short_desc"));
-                                        final List<String> myList = new ArrayList<>(listItems);
+                                        myList = new ArrayList<>(listItems);
                                         ArtInAreaActivity.this.runOnUiThread(new Runnable() {
                                             public void run() {
                                                 adapter = new ListAdapterView(ArtInAreaActivity.this, myList);
                                                 artList.setAdapter(adapter);
                                             }
                                         });
-                                        System.out.println("Das ist: " + description.getString("short_desc") + " beacon_id: " + description.getString("beacon_id") + " node Id " + nodeId);
+                                       // System.out.println("Das ist: " + description.getString("short_desc") + " beacon_id: " + description.getString("beacon_id") + " node Id " + nodeId);
                                     } catch (JSONException e) {
                                         e.printStackTrace();
                                     }
@@ -132,9 +129,7 @@ public class ArtInAreaActivity extends AppCompatActivity {
                             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                                 Toast.makeText(getApplicationContext(), "Item Clicked:" + i, Toast.LENGTH_SHORT).show();
                                 Intent intent = new Intent(getApplicationContext(), ShowArtefactActivity.class);
-                                //TODO nodeID is null in showArtefact
-                                intent.putExtra("artefact", beaconsMajorToBID.get(nodeId));
-                                System.out.println(intent.getStringExtra("artefact"));
+                                intent.putExtra("artefact", nodes.get(i));
                                 startActivity(intent);
                             }
                         });
@@ -167,20 +162,18 @@ public class ArtInAreaActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-
         SystemRequirementsChecker.checkWithDefaultDialogs(this);
-
         beaconManager.connect(new BeaconManager.ServiceReadyCallback() {
             @Override
             public void onServiceReady() {
-                beaconManager.startRanging(regionMint);
+                beaconManager.startRanging(region);
             }
         });
     }
 
     @Override
     protected void onPause() {
-        beaconManager.stopRanging(regionMint);
+        beaconManager.stopRanging(region);
         super.onPause();
     }
 }
