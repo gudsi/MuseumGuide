@@ -35,5 +35,7 @@ dependencies {
     implementation 'com.squareup.picasso:picasso:2.71828'
 
     implementation 'com.estimote:mustard:0.2.1'
-    compile 'com.estimote:sdk:1.0.12'
+    implementation 'com.estimote:sdk:1.0.12'
+
+    implementation 'com.android.support:design:28.0.0'
 }

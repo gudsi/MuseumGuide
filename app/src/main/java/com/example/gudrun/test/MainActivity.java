@@ -4,6 +4,7 @@ package com.example.gudrun.test;
 import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
+import android.support.design.widget.Snackbar;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
@@ -37,6 +38,9 @@ public class MainActivity extends AppCompatActivity {
 
         dl.addDrawerListener(t);
         t.syncState();
+
+        Snackbar snackbar = Snackbar.make(dl, "TODO", Snackbar.LENGTH_LONG);
+        snackbar.show();
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
