@@ -47,17 +47,19 @@ public class ArtInAreaActivity extends AppCompatActivity {
 
     ListAdapterView adapter;
     ListView artList;
-    LinkedHashSet<String> listItems = new LinkedHashSet<>();
-    ArrayList<String> nodes = new ArrayList<>();
-    String artefacts;
-    ArrayList<Integer> beaconsOfHTTPRequest = new ArrayList<>();
-    HashMap<String, String> beaconsMajorToBID =  new HashMap<>();
-    HashMap<String, Beacon> nodeIDToBeacon =  new HashMap<String, Beacon>();
-    String nodeId;
-    JSONObject description = null;
-    List<String> myList = new ArrayList<>();
+
     // Map of beacon major to info string, major = beaconID
     HashMap<Integer, JSONObject> majorToInfo = new HashMap<>();
+    LinkedHashSet<String> listOfArtefacts = new LinkedHashSet<>();
+    ArrayList<String> listOfNodes = new ArrayList<>();
+    ArrayList<Integer> beaconsOfHTTPRequest = new ArrayList<>();
+    HashMap<String, String> beaconsMajorToBeaconID =  new HashMap<>();
+    HashMap<String, Beacon> nodeIDToBeacon =  new HashMap<String, Beacon>();
+    List<String> myListForViewing = new ArrayList<>();
+    String artefacts;
+    String nodeId;
+    JSONObject description = null;
+
 
     @SuppressLint("SetTextI18n")
     @Override
@@ -94,7 +96,7 @@ public class ArtInAreaActivity extends AppCompatActivity {
 
             @Override
             public void onBeaconsDiscovered(BeaconRegion region, List<Beacon> detectedBeacons) {
-                myList.clear();
+                myListForViewing.clear();
                 if (!detectedBeacons.isEmpty()) {
                     // TODO Find proper place to put
                     Snackbar.make(findViewById(android.R.id.content), "BEACON", Snackbar.LENGTH_LONG).show();
@@ -109,9 +111,9 @@ public class ArtInAreaActivity extends AppCompatActivity {
                     for (int i = 0; i < detectedBeacons.size(); i ++) {
                         Beacon beaconInRange = detectedBeacons.get(i);
                         final int major = beaconInRange.getMajor();
-                        nodeId = beaconsMajorToBID.get(Integer.toString(major));
+                        nodeId = beaconsMajorToBeaconID.get(Integer.toString(major));
                         final NetworkAsyncTask httpTask = new NetworkAsyncTask(url + "/" + nodeId);
-                        nodes.add(nodeId);
+                        listOfNodes.add(nodeId);
                         nodeIDToBeacon.put(nodeId, detectedBeacons.get(i));
                         httpTask.execute();
                         new Thread(new Runnable() {
@@ -124,15 +126,15 @@ public class ArtInAreaActivity extends AppCompatActivity {
                                     JSONObject description = null;
                                     try {
                                         description = new JSONObject(myResponse).getJSONObject(nodeId);
-                                        listItems.add(description.getString("short_desc"));
-                                        //myList = new ArrayList<>(listItems);
+                                        listOfArtefacts.add(description.getString("short_desc"));
+                                        //myListForViewing = new ArrayList<>(listOfArtefacts);
                                         for(Integer beaconId : majorsSortedByDistance)  {
                                             String tmp = majorToInfo.get(beaconId).getString("short_desc");
-                                            myList.add(tmp);
+                                            myListForViewing.add(tmp);
                                         }
                                         ArtInAreaActivity.this.runOnUiThread(new Runnable() {
                                             public void run() {
-                                                adapter = new ListAdapterView(ArtInAreaActivity.this, myList);
+                                                adapter = new ListAdapterView(ArtInAreaActivity.this, myListForViewing);
                                                 artList.setAdapter(adapter);
                                             }
 
@@ -153,7 +155,7 @@ public class ArtInAreaActivity extends AppCompatActivity {
                             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                                 Toast.makeText(getApplicationContext(), "Item Clicked:" + i, Toast.LENGTH_SHORT).show();
                                 Intent intent = new Intent(getApplicationContext(), ShowArtefactActivity.class);
-                                intent.putExtra("artefact", nodes.get(i));
+                                intent.putExtra("artefact", listOfNodes.get(i));
                                 startActivity(intent);
                             }
                         });
@@ -175,7 +177,7 @@ public class ArtInAreaActivity extends AppCompatActivity {
                 JSONObject tmp = description.getJSONObject(nodeIterator);
                 String id;
                 id = tmp.getString("beacon_id");
-                beaconsMajorToBID.put(id, nodeIterator);
+                beaconsMajorToBeaconID.put(id, nodeIterator);
             }
         } catch (JSONException e) {
             e.printStackTrace();

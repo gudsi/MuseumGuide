@@ -6,7 +6,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import org.json.JSONException;
@@ -15,7 +14,7 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.Iterator;
 
-public class Information extends AppCompatActivity {
+public class InformationAcitivity extends AppCompatActivity {
 
     String url = "http://museum4all.integriert-studieren.jku.at/rest/exhibitions";
 
@@ -29,7 +28,6 @@ public class Information extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         setContentView(R.layout.activity_information);
         exhibitionsList = (ListView) findViewById(R.id.exhibitionsList);
         final NetworkAsyncTask httpTask = new NetworkAsyncTask(url);
@@ -50,9 +48,9 @@ public class Information extends AppCompatActivity {
                             Object tmp = exhibitions.getJSONObject(nodeID);
                             viewExhibitions = ((JSONObject) tmp).getString("short_desc");
                             listItems.add(viewExhibitions);
-                            Information.this.runOnUiThread(new Runnable() {
+                            InformationAcitivity.this.runOnUiThread(new Runnable() {
                                 public void run() {
-                                    adapter = new ListAdapterView(Information.this, listItems);
+                                    adapter = new ListAdapterView(InformationAcitivity.this, listItems);
                                     exhibitionsList.setAdapter(adapter);
                                 }
                             });
@@ -66,20 +64,14 @@ public class Information extends AppCompatActivity {
             }
         }).start();
 
-
-
-
-
-
-           exhibitionsList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                @Override
-                public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                    Toast.makeText(getApplicationContext(), "Item Clicked:" + i, Toast.LENGTH_SHORT).show();
-                   Intent intent = new Intent(getApplicationContext(), ShowExhibitionActivity.class);
-                   intent.putExtra("exhibition", nodeIDList.get(i));
-                    startActivity(intent);
-                }
-            });
-
+        exhibitionsList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                Toast.makeText(getApplicationContext(), "Item Clicked:" + i, Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(getApplicationContext(), ShowExhibitionActivity.class);
+                intent.putExtra("exhibition", nodeIDList.get(i));
+                startActivity(intent);
+            }
+        });
     }
 }
