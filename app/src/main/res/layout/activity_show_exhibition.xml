@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:id="@+id/shortdesc"
+        android:layout_width="236dp"
+        android:layout_height="36dp"
+        android:text="ShortDesc"
+        android:textSize="18sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.108"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.033" />
+
+
+    <TextView
+        android:id="@+id/longdesc"
+        android:layout_width="307dp"
+        android:layout_height="93dp"
+        android:layout_marginStart="52dp"
+        android:autoSizeMaxTextSize="100sp"
+        android:autoSizeMinTextSize="12sp"
+        android:autoSizeStepGranularity="2sp"
+        android:autoSizeTextType="uniform"
+        android:scrollbars="vertical"
+        android:text="LongDesc"
+        android:textSize="18sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/header_date"
+        android:layout_width="94dp"
+        android:layout_height="24dp"
+        android:layout_marginStart="256dp"
+        android:text="Standort"
+        android:textSize="14sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.149"
+        tools:text="Datum:" />
+
+    <TextView
+        android:id="@+id/start_date"
+        android:layout_width="116dp"
+        android:layout_height="38dp"
+        android:layout_marginStart="256dp"
+        android:autoSizeTextType="uniform"
+        android:text="start"
+        android:textSize="12sp"
+        app:autoSizeTextType="uniform"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.202" />
+
+    <TextView
+        android:id="@+id/end_date"
+        android:layout_width="116dp"
+        android:layout_height="38dp"
+        android:layout_marginStart="256dp"
+        android:autoSizeTextType="uniform"
+        android:text="end"
+        android:textSize="12sp"
+        app:autoSizeTextType="uniform"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.272" />
+
+    <TextView
+        android:id="@+id/header_opening_hours"
+        android:layout_width="94dp"
+        android:layout_height="24dp"
+        android:layout_marginStart="24dp"
+        android:text="Opening Hours"
+        android:textSize="14sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.62"
+        tools:text="Öffnungszeiten:" />
+
+    <TextView
+        android:id="@+id/opening_hours"
+        android:layout_width="252dp"
+        android:layout_height="90dp"
+        android:layout_marginStart="128dp"
+        android:autoSizeTextType="uniform"
+        android:text="Opening Hours"
+        android:textSize="12sp"
+        app:autoSizeTextType="uniform"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.68" />
+
+    <ImageView
+        android:id="@+id/artImage"
+        android:layout_width="229dp"
+        android:layout_height="195dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.103"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.193"
+        app:srcCompat="@drawable/ic_launcher_foreground" />
+
+</android.support.constraint.ConstraintLayout>
+

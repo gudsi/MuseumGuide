@@ -3,6 +3,7 @@ package com.example.gudrun.test;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.design.widget.Snackbar;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -95,6 +96,9 @@ public class ArtInAreaActivity extends AppCompatActivity {
             public void onBeaconsDiscovered(BeaconRegion region, List<Beacon> detectedBeacons) {
                 myList.clear();
                 if (!detectedBeacons.isEmpty()) {
+                    // TODO Find proper place to put
+                    Snackbar.make(findViewById(android.R.id.content), "BEACON", Snackbar.LENGTH_LONG).show();
+
                     extractMapNodeIDToBID(detectedBeacons);
                     //sortieren
                     final List<Integer> majorsSortedByDistance = sortBeacon(detectedBeacons);
@@ -103,9 +107,6 @@ public class ArtInAreaActivity extends AppCompatActivity {
                     debug.setText("Beacons found: " + detectedBeacons.size());
                     // Show list of artefacts found
                     for (int i = 0; i < detectedBeacons.size(); i ++) {
-                        // Crashes!!!!!!!!!!!!!
-                      //  Snackbar snackbar = Snackbar.make(dl, "BEACON", Snackbar.LENGTH_LONG);
-                      //  snackbar.show();
                         Beacon beaconInRange = detectedBeacons.get(i);
                         final int major = beaconInRange.getMajor();
                         nodeId = beaconsMajorToBID.get(Integer.toString(major));
@@ -202,14 +203,14 @@ public class ArtInAreaActivity extends AppCompatActivity {
     protected Map<Integer, Double> getDistance(List nodeList) {
         Map<Integer, Double> BeaconMajorToDistance = new HashMap<>();
         double distance;
-        Beacon bbb;
+        Beacon beacon;
         int power, rssi;
         for (int i = 0; i < nodeList.size(); i ++) {
-            bbb = (Beacon) nodeList.get(i);
-            power = bbb.getMeasuredPower();
-            rssi = bbb.getRssi();
+            beacon = (Beacon) nodeList.get(i);
+            power = beacon.getMeasuredPower();
+            rssi = beacon.getRssi();
             distance = Math.pow(10.0, (double)(power - rssi) / 20.0);
-            BeaconMajorToDistance.put(bbb.getMajor(), distance);
+            BeaconMajorToDistance.put(beacon.getMajor(), distance);
         }
         return BeaconMajorToDistance;
     }

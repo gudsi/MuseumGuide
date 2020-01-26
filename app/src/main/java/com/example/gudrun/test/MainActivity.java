@@ -1,6 +1,6 @@
 package com.example.gudrun.test;
 
-
+import android.util.Log;
 import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
@@ -9,14 +9,23 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.Toast;
+
+import com.estimote.coresdk.observation.region.beacon.BeaconRegion;
+import com.estimote.coresdk.recognition.packets.Beacon;
+import com.estimote.coresdk.service.BeaconManager;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.Iterator;
+import java.util.List;
 import java.util.Objects;
+import java.util.UUID;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -28,6 +37,9 @@ public class MainActivity extends AppCompatActivity {
     String myResponse;
     String url = "http://museum4all.integriert-studieren.jku.at/rest/artefacts";
 
+    private BeaconManager beaconManager;
+    private BeaconRegion region;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -36,11 +48,10 @@ public class MainActivity extends AppCompatActivity {
         dl = (DrawerLayout)findViewById(R.id.activity_main);
         t = new ActionBarDrawerToggle(this, dl,R.string.open, R.string.close);
 
+
+
         dl.addDrawerListener(t);
         t.syncState();
-
-        Snackbar snackbar = Snackbar.make(dl, "TODO", Snackbar.LENGTH_LONG);
-        snackbar.show();
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
@@ -88,19 +99,25 @@ public class MainActivity extends AppCompatActivity {
                         //intent.putExtra("nodeList", Objects.toString(response));
                         startActivity(intentFindArt);
                         Toast.makeText(MainActivity.this, "Find Art",Toast.LENGTH_SHORT).show();break;
-                    case R.id.inspect:
-                        Toast.makeText(MainActivity.this, "Inspect Area",Toast.LENGTH_SHORT).show();break;
+                    //case R.id.inspect:
+                      //  Toast.makeText(MainActivity.this, "Inspect Area",Toast.LENGTH_SHORT).show();break;
                     case R.id.museum:
                         Intent intentArtObjects = new Intent(getApplicationContext(), ArtInMuseum.class);
                         //intent.putExtra("nodeList", Objects.toString(response));
                         startActivity(intentArtObjects);
                         Toast.makeText(MainActivity.this, "List of Art in our Museum",Toast.LENGTH_SHORT).show();break;
+                    case R.id.info:
+                        Intent intentInfo = new Intent(getApplicationContext(), Information.class);
+                        //intent.putExtra("nodeList", Objects.toString(response));
+                        startActivity(intentInfo);
+                        Toast.makeText(MainActivity.this, "Information",Toast.LENGTH_SHORT).show();break;
                     default:
                         return true;
                 }
                 return true;
             }
         });
+        startService(new Intent(this, Snacktest.class));
     }
 
     @Override
