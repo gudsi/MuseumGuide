@@ -7,25 +7,28 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+
     <TextView
         android:id="@+id/shortdesc"
-        android:layout_width="236dp"
-        android:layout_height="36dp"
+        android:layout_width="361dp"
+        android:layout_height="60dp"
         android:text="ShortDesc"
         android:textSize="18sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.108"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.033" />
-
+        app:layout_constraintVertical_bias="0.041"
+        android:autoSizeMaxTextSize="100sp"
+        android:autoSizeMinTextSize="12sp"
+        android:autoSizeStepGranularity="2sp"
+        android:autoSizeTextType="uniform"/>
 
     <TextView
         android:id="@+id/longdesc"
-        android:layout_width="307dp"
-        android:layout_height="93dp"
-        android:layout_marginStart="52dp"
+        android:layout_width="323dp"
+        android:layout_height="150dp"
+        android:layout_marginStart="40dp"
         android:autoSizeMaxTextSize="100sp"
         android:autoSizeMinTextSize="12sp"
         android:autoSizeStepGranularity="2sp"
@@ -35,15 +38,16 @@
         android:textSize="18sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.722" />
 
     <TextView
         android:id="@+id/header_date"
         android:layout_width="94dp"
         android:layout_height="24dp"
         android:layout_marginStart="256dp"
-        android:text="Standort"
-        android:textSize="14sp"
+        android:text="Datum"
+        android:textSize="18sp"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -56,48 +60,54 @@
         android:layout_width="116dp"
         android:layout_height="38dp"
         android:layout_marginStart="256dp"
-        android:autoSizeTextType="uniform"
         android:text="start"
-        android:textSize="12sp"
+        android:textSize="10sp"
         app:autoSizeTextType="uniform"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.202" />
+        app:layout_constraintVertical_bias="0.202"
+        android:autoSizeMaxTextSize="100sp"
+        android:autoSizeMinTextSize="12sp"
+        android:autoSizeStepGranularity="2sp"
+        android:autoSizeTextType="uniform"/>
 
     <TextView
         android:id="@+id/end_date"
         android:layout_width="116dp"
         android:layout_height="38dp"
         android:layout_marginStart="256dp"
-        android:autoSizeTextType="uniform"
         android:text="end"
-        android:textSize="12sp"
+        android:textSize="10sp"
         app:autoSizeTextType="uniform"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.272" />
+        app:layout_constraintVertical_bias="0.272"
+        android:autoSizeMaxTextSize="100sp"
+        android:autoSizeMinTextSize="12sp"
+        android:autoSizeStepGranularity="2sp"
+        android:autoSizeTextType="uniform"/>
 
     <TextView
         android:id="@+id/header_opening_hours"
         android:layout_width="94dp"
         android:layout_height="24dp"
-        android:layout_marginStart="24dp"
+        android:layout_marginStart="32dp"
         android:text="Opening Hours"
-        android:textSize="14sp"
+        android:textSize="16sp"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.62"
+        app:layout_constraintVertical_bias="0.882"
         tools:text="Öffnungszeiten:" />
 
     <TextView
         android:id="@+id/opening_hours"
         android:layout_width="252dp"
         android:layout_height="90dp"
-        android:layout_marginStart="128dp"
+        android:layout_marginStart="152dp"
         android:autoSizeTextType="uniform"
         android:text="Opening Hours"
         android:textSize="12sp"
@@ -105,7 +115,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.68" />
+        app:layout_constraintVertical_bias="0.926" />
 
     <ImageView
         android:id="@+id/artImage"
@@ -113,10 +123,10 @@
         android:layout_height="195dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.103"
+        app:layout_constraintHorizontal_bias="0.087"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.193"
+        app:layout_constraintVertical_bias="0.197"
         app:srcCompat="@drawable/ic_launcher_foreground" />
 
 </android.support.constraint.ConstraintLayout>

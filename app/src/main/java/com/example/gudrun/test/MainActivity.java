@@ -39,8 +39,6 @@ public class MainActivity extends AppCompatActivity {
         dl = (DrawerLayout)findViewById(R.id.activity_main);
         t = new ActionBarDrawerToggle(this, dl,R.string.open, R.string.close);
 
-
-
         dl.addDrawerListener(t);
         t.syncState();
 
@@ -87,19 +85,16 @@ public class MainActivity extends AppCompatActivity {
                         Toast.makeText(MainActivity.this, "Art in my Area",Toast.LENGTH_SHORT).show();break;
                     case R.id.find:
                         Intent intentFindArt = new Intent(getApplicationContext(), FindArtActivity.class);
-                        //intent.putExtra("nodeList", Objects.toString(response));
                         startActivity(intentFindArt);
                         Toast.makeText(MainActivity.this, "Find Art",Toast.LENGTH_SHORT).show();break;
                     //case R.id.inspect:
                       //  Toast.makeText(MainActivity.this, "Inspect Area",Toast.LENGTH_SHORT).show();break;
                     case R.id.museum:
                         Intent intentArtObjects = new Intent(getApplicationContext(), ArtInMuseum.class);
-                        //intent.putExtra("nodeList", Objects.toString(response));
                         startActivity(intentArtObjects);
                         Toast.makeText(MainActivity.this, "List of Art in our Museum",Toast.LENGTH_SHORT).show();break;
                     case R.id.info:
                         Intent intentInfo = new Intent(getApplicationContext(), InformationAcitivity.class);
-                        //intent.putExtra("nodeList", Objects.toString(response));
                         startActivity(intentInfo);
                         Toast.makeText(MainActivity.this, "InformationAcitivity",Toast.LENGTH_SHORT).show();break;
                     default:
@@ -115,7 +110,6 @@ public class MainActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         if(t.onOptionsItemSelected(item))
             return true;
-
         return super.onOptionsItemSelected(item);
     }
 }

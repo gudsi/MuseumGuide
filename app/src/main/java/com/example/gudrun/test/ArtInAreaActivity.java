@@ -47,19 +47,17 @@ public class ArtInAreaActivity extends AppCompatActivity {
 
     ListAdapterView adapter;
     ListView artList;
-
-    // Map of beacon major to info string, major = beaconID
-    HashMap<Integer, JSONObject> majorToInfo = new HashMap<>();
-    LinkedHashSet<String> listOfArtefacts = new LinkedHashSet<>();
-    ArrayList<String> listOfNodes = new ArrayList<>();
-    ArrayList<Integer> beaconsOfHTTPRequest = new ArrayList<>();
-    HashMap<String, String> beaconsMajorToBeaconID =  new HashMap<>();
-    HashMap<String, Beacon> nodeIDToBeacon =  new HashMap<String, Beacon>();
-    List<String> myListForViewing = new ArrayList<>();
+    LinkedHashSet<String> listItems = new LinkedHashSet<>();
+    ArrayList<String> nodes = new ArrayList<>();
     String artefacts;
+    ArrayList<Integer> beaconsOfHTTPRequest = new ArrayList<>();
+    HashMap<String, String> beaconsMajorToBID =  new HashMap<>();
+    HashMap<String, Beacon> nodeIDToBeacon =  new HashMap<String, Beacon>();
     String nodeId;
     JSONObject description = null;
-
+    List<String> myList = new ArrayList<>();
+    // Map of beacon major to info string, major = beaconID
+    HashMap<Integer, JSONObject> majorToInfo = new HashMap<>();
 
     @SuppressLint("SetTextI18n")
     @Override
@@ -96,7 +94,7 @@ public class ArtInAreaActivity extends AppCompatActivity {
 
             @Override
             public void onBeaconsDiscovered(BeaconRegion region, List<Beacon> detectedBeacons) {
-                myListForViewing.clear();
+                myList.clear();
                 if (!detectedBeacons.isEmpty()) {
                     // TODO Find proper place to put
                     Snackbar.make(findViewById(android.R.id.content), "BEACON", Snackbar.LENGTH_LONG).show();
@@ -111,9 +109,9 @@ public class ArtInAreaActivity extends AppCompatActivity {
                     for (int i = 0; i < detectedBeacons.size(); i ++) {
                         Beacon beaconInRange = detectedBeacons.get(i);
                         final int major = beaconInRange.getMajor();
-                        nodeId = beaconsMajorToBeaconID.get(Integer.toString(major));
+                        nodeId = beaconsMajorToBID.get(Integer.toString(major));
                         final NetworkAsyncTask httpTask = new NetworkAsyncTask(url + "/" + nodeId);
-                        listOfNodes.add(nodeId);
+                        nodes.add(nodeId);
                         nodeIDToBeacon.put(nodeId, detectedBeacons.get(i));
                         httpTask.execute();
                         new Thread(new Runnable() {
@@ -126,21 +124,19 @@ public class ArtInAreaActivity extends AppCompatActivity {
                                     JSONObject description = null;
                                     try {
                                         description = new JSONObject(myResponse).getJSONObject(nodeId);
-                                        listOfArtefacts.add(description.getString("short_desc"));
-                                        //myListForViewing = new ArrayList<>(listOfArtefacts);
+                                        listItems.add(description.getString("short_desc"));
+                                        //myList = new ArrayList<>(listOfExhibitions);
                                         for(Integer beaconId : majorsSortedByDistance)  {
                                             String tmp = majorToInfo.get(beaconId).getString("short_desc");
-                                            myListForViewing.add(tmp);
+                                            myList.add(tmp);
                                         }
                                         ArtInAreaActivity.this.runOnUiThread(new Runnable() {
                                             public void run() {
-                                                adapter = new ListAdapterView(ArtInAreaActivity.this, myListForViewing);
+                                                adapter = new ListAdapterView(ArtInAreaActivity.this, myList);
                                                 artList.setAdapter(adapter);
                                             }
 
                                         });
-
-                                       // System.out.println("Das ist: " + description.getString("short_desc") + " beacon_id: " + description.getString("beacon_id") + " node Id " + nodeId);
                                     } catch (JSONException e) {
                                         e.printStackTrace();
                                     }
@@ -155,7 +151,7 @@ public class ArtInAreaActivity extends AppCompatActivity {
                             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                                 Toast.makeText(getApplicationContext(), "Item Clicked:" + i, Toast.LENGTH_SHORT).show();
                                 Intent intent = new Intent(getApplicationContext(), ShowArtefactActivity.class);
-                                intent.putExtra("artefact", listOfNodes.get(i));
+                                intent.putExtra("artefact", nodes.get(i));
                                 startActivity(intent);
                             }
                         });
@@ -177,7 +173,7 @@ public class ArtInAreaActivity extends AppCompatActivity {
                 JSONObject tmp = description.getJSONObject(nodeIterator);
                 String id;
                 id = tmp.getString("beacon_id");
-                beaconsMajorToBeaconID.put(id, nodeIterator);
+                beaconsMajorToBID.put(id, nodeIterator);
             }
         } catch (JSONException e) {
             e.printStackTrace();
@@ -219,7 +215,6 @@ public class ArtInAreaActivity extends AppCompatActivity {
 
     protected LinkedList<Integer> sortBeacon(List nodeList) {
         Map<Integer, Double> beaconMajorToDistance = getDistance(nodeList);
-       // ArrayList<Integer, Beacon> beaconsSortedByDistance = new ArrayList<>();
         List<Double> distances = new ArrayList<>(beaconMajorToDistance.values());
         Collections.sort(distances);
         Set<Map.Entry<Integer, Double>> entries = beaconMajorToDistance.entrySet();

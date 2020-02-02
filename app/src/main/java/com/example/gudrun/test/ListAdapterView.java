@@ -74,7 +74,6 @@ public class ListAdapterView extends BaseAdapter {
                 }
             }
         }
-        //System.out.println(arraylist + " - " + artefactsNameList);
         notifyDataSetChanged();
     }
 }

@@ -1,7 +1,7 @@
 package com.example.gudrun.test;
 
 import android.app.IntentService;
-import android.content.Context;
+import android.content.Intent;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.support.annotation.Nullable;
@@ -15,7 +15,6 @@ import com.estimote.coresdk.service.BeaconManager;
 
 import java.util.List;
 import java.util.UUID;
-
 
 
 public class Snacktest extends IntentService {
@@ -35,7 +34,7 @@ public class Snacktest extends IntentService {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-       // Toast.makeText(this, "service starting", Toast.LENGTH_SHORT).show();
+        // Toast.makeText(this, "service starting", Toast.LENGTH_SHORT).show();
 
         beaconManager = new BeaconManager(this);
         beaconManager.setForegroundScanPeriod(1000, 0);
@@ -50,23 +49,22 @@ public class Snacktest extends IntentService {
 
                 if (!detectedBeacons.isEmpty()) {
                     // TODO Find proper place to put
-                    //Snackbar.make(findViewById(android.R.id.content), "BEACON", Snackbar.LENGTH_LONG).show();
-                    Log.d("huhu", "gsdf"+ 3);
+                    //Snackbar.make(findViewById((android.R.id.content), "BEACON", Snackbar.LENGTH_LONG).show();
+                    System.out.print("Snackbar");
 
 
-
-                    Log.d("Beacons found: ","dings" + detectedBeacons.size());
+                    Log.d("Beacons found: ", "Number" + detectedBeacons.size());
                     // Show list of artefacts found
                     cnt = detectedBeacons.size();
-                    for (int i = 0; i < detectedBeacons.size(); i ++) {
+                    for (int i = 0; i < detectedBeacons.size(); i++) {
                         Beacon beaconInRange = detectedBeacons.get(i);
-                                            }
+                    }
                 }
             }
         });
         //Toast.makeText(this, cnt, Toast.LENGTH_SHORT).show();
 
-        return super.onStartCommand(intent,flags,startId);
+        return super.onStartCommand(intent, flags, startId);
     }
 
     @Override

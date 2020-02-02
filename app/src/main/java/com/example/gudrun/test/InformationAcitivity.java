@@ -16,13 +16,17 @@ import java.util.Iterator;
 
 public class InformationAcitivity extends AppCompatActivity {
 
-    String url = "http://museum4all.integriert-studieren.jku.at/rest/exhibitions";
+    String exhibitonsURL = "http://museum4all.integriert-studieren.jku.at/rest/exhibitions";
+    String roomsURL = "http://museum4all.integriert-studieren.jku.at/rest/rooms";
 
     ListAdapterView adapter;
     ListView exhibitionsList;
+    ListView roomsList;
     String viewExhibitions = "";
+    String viewRooms = "";
 
-    ArrayList<String> listItems = new ArrayList<>();
+    ArrayList<String> listOfExhibitions = new ArrayList<>();
+    ArrayList<String> listOfRooms = new ArrayList<>();
     final ArrayList<String> nodeIDList = new ArrayList<>();
 
     @Override
@@ -30,13 +34,14 @@ public class InformationAcitivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_information);
         exhibitionsList = (ListView) findViewById(R.id.exhibitionsList);
-        final NetworkAsyncTask httpTask = new NetworkAsyncTask(url);
-        httpTask.execute();
+        roomsList = (ListView) findViewById(R.id.roomsList);
+        final NetworkAsyncTask exhibitionsHttpTask = new NetworkAsyncTask(exhibitonsURL);
+        exhibitionsHttpTask.execute();
         new Thread(new Runnable() {
             @Override
             public void run() {
                 try {
-                    final Object response = httpTask.get();
+                    final Object response = exhibitionsHttpTask.get();
                     String myResponse = response.toString();
                     JSONObject exhibitions;
                     try {
@@ -47,10 +52,10 @@ public class InformationAcitivity extends AppCompatActivity {
                             nodeIDList.add(nodeID);
                             Object tmp = exhibitions.getJSONObject(nodeID);
                             viewExhibitions = ((JSONObject) tmp).getString("short_desc");
-                            listItems.add(viewExhibitions);
+                            listOfExhibitions.add(viewExhibitions);
                             InformationAcitivity.this.runOnUiThread(new Runnable() {
                                 public void run() {
-                                    adapter = new ListAdapterView(InformationAcitivity.this, listItems);
+                                    adapter = new ListAdapterView(InformationAcitivity.this, listOfExhibitions);
                                     exhibitionsList.setAdapter(adapter);
                                 }
                             });
@@ -63,6 +68,41 @@ public class InformationAcitivity extends AppCompatActivity {
                 }
             }
         }).start();
+
+        final NetworkAsyncTask roomsHTttpTask = new NetworkAsyncTask(roomsURL);
+        roomsHTttpTask.execute();
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    final Object response = roomsHTttpTask.get();
+                    String myResponse = response.toString();
+                    JSONObject exhibitions;
+                    try {
+                        exhibitions = new JSONObject(myResponse).getJSONObject("rooms");
+                        Iterator<String> iterator = exhibitions.keys();
+                        while (iterator.hasNext()) {
+                            String nodeID = iterator.next();
+                            nodeIDList.add(nodeID);
+                            Object tmp = exhibitions.getJSONObject(nodeID);
+                            viewRooms = ((JSONObject) tmp).getString("short_desc");
+                            listOfRooms.add(viewRooms);
+                            InformationAcitivity.this.runOnUiThread(new Runnable() {
+                                public void run() {
+                                    adapter = new ListAdapterView(InformationAcitivity.this, listOfRooms);
+                                    roomsList.setAdapter(adapter);
+                                }
+                            });
+                        }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        }).start();
+
 
         exhibitionsList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
