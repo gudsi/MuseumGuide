@@ -41,7 +41,7 @@ public class Snacktest extends IntentService {
         region = new BeaconRegion("region",
                 UUID.fromString("B9407F30-F5F8-466E-AFF9-25556B57FE6D"), null, null);
 
-        Toast.makeText(this, "I am here", Toast.LENGTH_SHORT).show();
+        //Toast.makeText(this, "I am here", Toast.LENGTH_SHORT).show();
         beaconManager.setRangingListener(new BeaconManager.BeaconRangingListener() {
 
             @Override

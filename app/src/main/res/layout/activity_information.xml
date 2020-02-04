@@ -8,7 +8,7 @@
 
     <TextView
         android:id="@+id/header_exhibitions"
-        android:layout_width="94dp"
+        android:layout_width="120dp"
         android:layout_height="24dp"
         android:layout_marginStart="20dp"
         android:text="Austellungen:"
@@ -29,7 +29,8 @@
         app:layout_constraintHorizontal_bias="0.488"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.17" />
+        app:layout_constraintVertical_bias="0.17"
+        android:inputType="textMultiLine"/>
 
     <TextView
         android:id="@+id/header_rooms"

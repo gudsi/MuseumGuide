@@ -27,7 +27,8 @@ public class InformationAcitivity extends AppCompatActivity {
 
     ArrayList<String> listOfExhibitions = new ArrayList<>();
     ArrayList<String> listOfRooms = new ArrayList<>();
-    final ArrayList<String> nodeIDList = new ArrayList<>();
+    final ArrayList<String> exhibitionsNodeIDList = new ArrayList<>();
+    final ArrayList<String> roomsNodeIDList = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,7 +50,7 @@ public class InformationAcitivity extends AppCompatActivity {
                         Iterator<String> iterator = exhibitions.keys();
                         while (iterator.hasNext()) {
                             String nodeID = iterator.next();
-                            nodeIDList.add(nodeID);
+                            exhibitionsNodeIDList.add(nodeID);
                             Object tmp = exhibitions.getJSONObject(nodeID);
                             viewExhibitions = ((JSONObject) tmp).getString("short_desc");
                             listOfExhibitions.add(viewExhibitions);
@@ -83,7 +84,7 @@ public class InformationAcitivity extends AppCompatActivity {
                         Iterator<String> iterator = exhibitions.keys();
                         while (iterator.hasNext()) {
                             String nodeID = iterator.next();
-                            nodeIDList.add(nodeID);
+                            roomsNodeIDList.add(nodeID);
                             Object tmp = exhibitions.getJSONObject(nodeID);
                             viewRooms = ((JSONObject) tmp).getString("short_desc");
                             listOfRooms.add(viewRooms);
@@ -107,9 +108,19 @@ public class InformationAcitivity extends AppCompatActivity {
         exhibitionsList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                Toast.makeText(getApplicationContext(), "Item Clicked:" + i, Toast.LENGTH_SHORT).show();
+                //Toast.makeText(getApplicationContext(), "Item Clicked:" + i, Toast.LENGTH_SHORT).show();
                 Intent intent = new Intent(getApplicationContext(), ShowExhibitionActivity.class);
-                intent.putExtra("exhibition", nodeIDList.get(i));
+                intent.putExtra("exhibition", exhibitionsNodeIDList.get(i));
+                startActivity(intent);
+            }
+        });
+
+        roomsList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                //Toast.makeText(getApplicationContext(), "Item Clicked:" + i, Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(getApplicationContext(), ShowRoomActivity.class);
+                intent.putExtra("room", roomsNodeIDList.get(i));
                 startActivity(intent);
             }
         });

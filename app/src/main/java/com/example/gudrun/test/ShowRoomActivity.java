@@ -11,37 +11,41 @@ import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
 
 
-public class ShowArtefactActivity extends AppCompatActivity {
+public class ShowRoomActivity extends AppCompatActivity {
 
-    TextView title, longDesc, location;
+    TextView title, longDesc, exhibitonId, location;
     ImageView image;
 
-    String artefactNr = "";
-    String url = "http://museum4all.integriert-studieren.jku.at/rest/artefacts";
+    String roomNr = "";
+    String url = "http://museum4all.integriert-studieren.jku.at/rest/rooms";
     String img_url = "http://museum4all.integriert-studieren.jku.at/sites/default/files";
     String img_path;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_show_artefact);
+        setContentView(R.layout.activity_show_room);
         title = findViewById(R.id.shortdesc);
         image = findViewById(R.id.artImage);
         longDesc = findViewById(R.id.longdesc);
         location = findViewById(R.id.location);
+        exhibitonId = findViewById(R.id.exhibitionId);
 
         longDesc.setMovementMethod(new ScrollingMovementMethod());
 
-        artefactNr = getIntent().getStringExtra("artefact");
+        roomNr = getIntent().getStringExtra("room");
 
-        final NetworkAsyncTask httpTask = new NetworkAsyncTask(url + "/" + artefactNr);
+        final NetworkAsyncTask httpTask = new NetworkAsyncTask(url + "/" + roomNr);
         httpTask.execute();
         new Thread(new Runnable() {
             @Override
@@ -52,9 +56,11 @@ public class ShowArtefactActivity extends AppCompatActivity {
                     System.out.println(myResponse);
                     JSONObject description = null;
                     try {
-                        description = new JSONObject(myResponse).getJSONObject(artefactNr.toString());
+                        description = new JSONObject(myResponse).getJSONObject(roomNr.toString());
                         title.setText(description.getString("short_desc"));
                         location.setText(description.getString("location"));
+
+                        exhibitonId.setText(description.getString("exhibition_id"));
 
                         String i = description.getString("long_desc");
                         byte[] data = Base64.decode(description.getString("long_desc"), Base64.DEFAULT);
@@ -67,13 +73,10 @@ public class ShowArtefactActivity extends AppCompatActivity {
                         img_path = description.get("picture").toString();
                         Path path = Paths.get(img_path);
                         int r = path.toString().indexOf(':');
-                        String hopi = path.toString().substring(r + 1);
-                        img_url = img_url.concat(hopi);
-                        System.out.println(img_url);
+                        String pt = path.toString().substring(r + 1);
+                        img_url = img_url.concat(pt);
 
-                        String beaconID = description.getString("beacon_id");
-
-                        ShowArtefactActivity.this.runOnUiThread(new Runnable() {
+                        ShowRoomActivity.this.runOnUiThread(new Runnable() {
                             public void run() {
                                 Picasso.get().load(img_url).into(image);
                             }
@@ -89,3 +92,4 @@ public class ShowArtefactActivity extends AppCompatActivity {
         }).start();
     }
 }
+

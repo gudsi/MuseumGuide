@@ -97,14 +97,14 @@ public class ArtInAreaActivity extends AppCompatActivity {
                 myList.clear();
                 if (!detectedBeacons.isEmpty()) {
                     // TODO Find proper place to put
-                    Snackbar.make(findViewById(android.R.id.content), "BEACON", Snackbar.LENGTH_LONG).show();
+                    //Snackbar.make(findViewById(android.R.id.content), "BEACON", Snackbar.LENGTH_LONG).show();
 
                     extractMapNodeIDToBID(detectedBeacons);
                     //sortieren
                     final List<Integer> majorsSortedByDistance = sortBeacon(detectedBeacons);
 
                     Log.d("Beacon found", "Count" + detectedBeacons.size() );
-                    debug.setText("Beacons found: " + detectedBeacons.size());
+                    debug.setText("Number of artefacts in area: " + detectedBeacons.size());
                     // Show list of artefacts found
                     for (int i = 0; i < detectedBeacons.size(); i ++) {
                         Beacon beaconInRange = detectedBeacons.get(i);
@@ -218,7 +218,6 @@ public class ArtInAreaActivity extends AppCompatActivity {
         List<Double> distances = new ArrayList<>(beaconMajorToDistance.values());
         Collections.sort(distances);
         Set<Map.Entry<Integer, Double>> entries = beaconMajorToDistance.entrySet();
-
 
         Comparator<Map.Entry<Integer, Double>> valueComparator = new Comparator<Map.Entry<Integer, Double>>() {
 

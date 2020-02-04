@@ -22,15 +22,21 @@
 
     <TextView
         android:id="@+id/longdesc"
-        android:layout_width="359dp"
-        android:layout_height="96dp"
-        android:layout_marginStart="16dp"
+        android:layout_width="270dp"
+        android:layout_height="150dp"
+        android:layout_marginStart="40dp"
+        android:autoSizeMaxTextSize="100sp"
+        android:autoSizeMinTextSize="12sp"
+        android:autoSizeStepGranularity="2sp"
+        android:autoSizeTextType="uniform"
+        android:scrollbars="vertical"
         android:text="LongDesc"
         android:textSize="18sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.665" />
+        app:layout_constraintVertical_bias="0.722"
+        />
 
     <TextView
         android:id="@+id/header_location"
@@ -48,7 +54,7 @@
 
     <TextView
         android:id="@+id/location"
-        android:layout_width="116dp"
+        android:layout_width="90dp"
         android:layout_height="38dp"
         android:layout_marginStart="252dp"
         android:text="Location"
