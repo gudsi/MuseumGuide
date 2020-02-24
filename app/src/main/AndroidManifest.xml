@@ -57,16 +57,6 @@
         </activity>
 
         <activity
-        android:name=".Snacktest"
-        android:label="@string/app_name" >
-        <intent-filter>
-            <action android:name="android.intent.action.MAIN" />
-
-            <category android:name="android.intent.category.LAUNCHER" />
-        </intent-filter>
-    </activity>
-
-        <activity
             android:name=".InformationAcitivity"
             android:parentActivityName=".MainActivity">
 
@@ -93,8 +83,15 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".MainActivity" />
         </activity>
+        <activity
+            android:name=".ManualActivity"
+            android:parentActivityName=".MainActivity">
 
-    <service android:enabled="true" android:name=".Snacktest"></service>
+            <!-- The meta-data tag is required if you support API level 15 and lower -->
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".MainActivity" />
+        </activity>
 
     </application>
 

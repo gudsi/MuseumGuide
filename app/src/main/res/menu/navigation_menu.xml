@@ -9,10 +9,6 @@
         android:id="@+id/find"
         android:icon="@android:drawable/ic_menu_search"
         android:title="Find Art" />
-    <!-- <item
-        android:id="@+id/inspect"
-        android:icon="@android:drawable/ic_menu_camera"
-        android:title="Inspect Area" /> -->
     <item
         android:id="@+id/museum"
         android:icon="@android:drawable/ic_menu_sort_by_size"
@@ -23,4 +19,8 @@
         android:icon="@android:drawable/ic_menu_info_details"
         android:title="Information" />
 
+    <item
+        android:id="@+id/manual"
+        android:icon="@android:drawable/ic_menu_info_details"
+        android:title="Manual" />
 </menu>
