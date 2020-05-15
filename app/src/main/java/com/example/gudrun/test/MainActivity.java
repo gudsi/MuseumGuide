@@ -1,17 +1,17 @@
 package com.example.gudrun.test;
 
+import android.app.FragmentManager;
+import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
+import android.app.Fragment;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.widget.Toast;
-
-import com.estimote.coresdk.observation.region.beacon.BeaconRegion;
-import com.estimote.coresdk.service.BeaconManager;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -28,17 +28,12 @@ public class MainActivity extends AppCompatActivity {
     String myResponse;
     String url = "http://museum4all.integriert-studieren.jku.at/rest/artefacts";
 
-    private BeaconManager beaconManager;
-    private BeaconRegion region;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
         dl = (DrawerLayout)findViewById(R.id.activity_main);
         t = new ActionBarDrawerToggle(this, dl,R.string.open, R.string.close);
-
         dl.addDrawerListener(t);
         t.syncState();
 
@@ -56,12 +51,6 @@ public class MainActivity extends AppCompatActivity {
 
                     try {
                         artefacts = new JSONObject(myResponse).getJSONObject("artefacts");
-                       /* Iterator<String> iterator = artefacts.keys();
-                        while (iterator.hasNext()) {
-                            String nodeID = iterator.next();
-                            nodeIDList.add(nodeID);
-                            Object tmp = artefacts.getJSONObject(nodeID);
-                        }*/
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
@@ -79,31 +68,27 @@ public class MainActivity extends AppCompatActivity {
                 switch(id)
                 {
                     case R.id.area:
-                        Intent intent = new Intent(getApplicationContext(), ArtInAreaActivity.class);
-                        intent.putExtra("artefacts", Objects.toString(myResponse));
-                        startActivity(intent);
+                        Bundle bundle = new Bundle();
+                        bundle.putString("artefacts", Objects.toString(myResponse));
+                        loadFragment(new ArtInAreaFragment(), bundle);
                         Toast.makeText(MainActivity.this, "Art in my Area",Toast.LENGTH_SHORT).show();break;
                     case R.id.find:
-                        Intent intentFindArt = new Intent(getApplicationContext(), FindArtActivity.class);
-                        startActivity(intentFindArt);
-                        Toast.makeText(MainActivity.this, "Find Art",Toast.LENGTH_SHORT).show();break;
-                    //case R.id.inspect:
-                      //  Toast.makeText(MainActivity.this, "Inspect Area",Toast.LENGTH_SHORT).show();break;
+                        loadFragment(new FindArtFragment(), null);
+                        Toast.makeText(MainActivity.this, "Art in my Area",Toast.LENGTH_SHORT).show();break;
                     case R.id.museum:
-                        Intent intentArtObjects = new Intent(getApplicationContext(), ArtInMuseum.class);
-                        startActivity(intentArtObjects);
+                        loadFragment(new ArtInMuseumFragment(), null);
                         Toast.makeText(MainActivity.this, "List of Art in our Museum",Toast.LENGTH_SHORT).show();break;
                     case R.id.info:
-                        Intent intentInfo = new Intent(getApplicationContext(), InformationAcitivity.class);
-                        startActivity(intentInfo);
-                        Toast.makeText(MainActivity.this, "InformationAcitivity",Toast.LENGTH_SHORT).show();break;
+                        loadFragment(new InformationFragment(), null);
+                        Toast.makeText(MainActivity.this, "Information",Toast.LENGTH_SHORT).show();break;
+                    case R.id.manual:
+                        startActivity(new Intent(getApplicationContext(), ManualActivity.class)); break;
                     default:
                         return true;
                 }
                 return true;
             }
         });
-        startService(new Intent(this, Snacktest.class));
     }
 
     @Override
@@ -111,5 +96,28 @@ public class MainActivity extends AppCompatActivity {
         if(t.onOptionsItemSelected(item))
             return true;
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (getSupportFragmentManager().getBackStackEntryCount() > 0) {
+            getSupportFragmentManager().popBackStack();
+            getSupportFragmentManager().beginTransaction().commit();
+        }
+        else {
+            super.onBackPressed();
+        }
+    }
+
+    public void loadFragment(Fragment fragment, Bundle bundle) {
+        fragment.setArguments(bundle);
+    // create a FragmentManager
+        FragmentManager fm = getFragmentManager();
+    // create a FragmentTransaction to begin the transaction and replace the Fragment
+        FragmentTransaction fragmentTransaction = fm.beginTransaction();
+    // replace the FrameLayout with new Fragment
+        fragmentTransaction.replace(R.id.frameLayout, fragment);
+        fragmentTransaction.addToBackStack(null);
+        fragmentTransaction.commit(); // save the changes
     }
 }

@@ -11,25 +11,26 @@
     <TextView
         android:id="@+id/shortdesc"
         android:layout_width="350dp"
-        android:layout_height="100dp"
-        android:text="ShortDesc"
-        android:textSize="18sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.041"
-        android:autoSizeMaxTextSize="100sp"
+        android:layout_height="40dp"
+        android:autoSizeMaxTextSize="20sp"
         android:autoSizeMinTextSize="12sp"
         android:autoSizeStepGranularity="2sp"
-        android:autoSizeTextType="uniform"/>
+        android:autoSizeTextType="uniform"
+        android:text="ShortDesc"
+        android:textSize="20sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.655"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.041" />
 
     <TextView
         android:id="@+id/longdesc"
         android:layout_width="300dp"
         android:layout_height="150dp"
-        android:layout_marginStart="40dp"
-        android:autoSizeMaxTextSize="100sp"
+        android:layout_marginStart="32dp"
+        android:autoSizeMaxTextSize="14sp"
         android:autoSizeMinTextSize="12sp"
         android:autoSizeStepGranularity="2sp"
         android:autoSizeTextType="uniform"
@@ -39,77 +40,101 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.722" />
+        app:layout_constraintVertical_bias="0.597" />
 
     <TextView
-        android:id="@+id/location_header"
-        android:layout_width="91dp"
-        android:layout_height="37dp"
+        android:id="@+id/header_date"
+        android:layout_width="250dp"
+        android:layout_height="24dp"
         android:layout_marginStart="40dp"
-        android:layout_marginEnd="50dp"
-        android:text="Standort:"
-        android:textSize="18sp"
+        android:layout_marginEnd="221dp"
+        android:text="Austellungszeitraum:"
+        android:textSize="14sp"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.03"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.848"
-        tools:text="Standort: " />
+        app:layout_constraintVertical_bias="0.758"
+        tools:text="Datum:" />
 
     <TextView
-        android:id="@+id/location"
-        android:layout_width="90dp"
+        android:id="@+id/end_date"
+        android:layout_width="91dp"
         android:layout_height="38dp"
-        android:layout_marginStart="48dp"
-        android:autoSizeMaxTextSize="100sp"
-        android:autoSizeMinTextSize="12sp"
+        android:layout_marginStart="200dp"
+        android:autoSizeMaxTextSize="12sp"
+        android:autoSizeMinTextSize="10dp"
         android:autoSizeStepGranularity="2sp"
         android:autoSizeTextType="uniform"
-        android:text="location"
+        android:text="end"
+        app:autoSizeTextType="uniform"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.819" />
+
+    <TextView
+        android:id="@+id/from_to"
+        android:layout_width="26dp"
+        android:layout_height="38dp"
+        android:layout_marginStart="184dp"
+        android:text=" - "
+        android:textSize="18sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.819"
+        tools:text=" - " />
+
+    <TextView
+        android:id="@+id/start_date"
+        android:layout_width="90dp"
+        android:layout_height="38dp"
+        android:layout_marginStart="88dp"
+        android:autoSizeMaxTextSize="12sp"
+        android:autoSizeMinTextSize="10sp"
+        android:autoSizeStepGranularity="2sp"
+        android:autoSizeTextType="uniform"
+        android:text="start"
         android:textSize="10sp"
         app:autoSizeTextType="uniform"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.903"
-        tools:text="location" />
+        app:layout_constraintVertical_bias="0.819" />
 
     <TextView
-        android:id="@+id/exhibitionId_Header"
+        android:id="@+id/header_opening_hours"
         android:layout_width="94dp"
         android:layout_height="24dp"
-        android:layout_marginStart="256dp"
-        android:autoSizeMaxTextSize="100sp"
+        android:layout_marginStart="264dp"
+        android:autoSizeMaxTextSize="14sp"
         android:autoSizeMinTextSize="12sp"
         android:autoSizeStepGranularity="2sp"
         android:autoSizeTextType="uniform"
-        android:text="AusstellungsId: "
-        android:textSize="16sp"
+        android:text="Öffnungszeiten: "
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.237"
-        tools:text="AusstellungsId:" />
+        app:layout_constraintVertical_bias="0.161"
+        tools:text="Öffnungszeiten:" />
 
     <TextView
-        android:id="@+id/exhibition"
-        android:layout_width="92dp"
-        android:layout_height="33dp"
-        android:layout_marginStart="256dp"
-        android:autoSizeMaxTextSize="100sp"
-        android:autoSizeMinTextSize="12sp"
-        android:autoSizeStepGranularity="2sp"
+        android:id="@+id/opening_hours"
+        android:layout_width="113dp"
+        android:layout_height="122dp"
+        android:layout_marginStart="264dp"
         android:autoSizeTextType="uniform"
-        android:text="exhibitionId"
-        android:textSize="10sp"
+        android:text="Öffnungszeiten: "
+        android:textSize="12sp"
         app:autoSizeTextType="uniform"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.307" />
+        app:layout_constraintVertical_bias="0.264" />
 
     <ImageView
         android:id="@+id/artImage"
@@ -117,13 +142,11 @@
         android:layout_height="195dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.087"
+        app:layout_constraintHorizontal_bias="0.12"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.313"
+        app:layout_constraintVertical_bias="0.192"
         app:srcCompat="@drawable/ic_launcher_foreground" />
-
-
 
 </android.support.constraint.ConstraintLayout>
 

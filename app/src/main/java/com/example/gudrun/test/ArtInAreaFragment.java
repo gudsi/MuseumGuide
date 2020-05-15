@@ -1,13 +1,13 @@
 package com.example.gudrun.test;
 
-import android.annotation.SuppressLint;
-import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
-import android.support.design.widget.Snackbar;
+import android.app.Fragment;
 import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -16,6 +16,10 @@ import android.widget.Toast;
 import com.estimote.coresdk.common.requirements.SystemRequirementsChecker;
 import com.estimote.coresdk.observation.region.beacon.BeaconRegion;
 import com.estimote.coresdk.recognition.packets.Beacon;
+import com.estimote.coresdk.service.BeaconManager;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -27,18 +31,11 @@ import java.util.LinkedHashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
 import java.util.UUID;
 
-import com.estimote.coresdk.service.BeaconManager;
-
-import org.json.JSONException;
-import org.json.JSONObject;
-
-public class ArtInAreaActivity extends AppCompatActivity {
-
-   // static final String APPID = "museum4all-f8y";
- //   static final String APPTOKEN = "40a915a4bb95894fb98fa382eef15c9c";
+public class ArtInAreaFragment extends Fragment {
 
     String url = "http://museum4all.integriert-studieren.jku.at/rest/artefacts";
 
@@ -49,26 +46,30 @@ public class ArtInAreaActivity extends AppCompatActivity {
     ListView artList;
     LinkedHashSet<String> listItems = new LinkedHashSet<>();
     ArrayList<String> nodes = new ArrayList<>();
-    String artefacts;
+    String artefacts, nodeId;
     ArrayList<Integer> beaconsOfHTTPRequest = new ArrayList<>();
     HashMap<String, String> beaconsMajorToBID =  new HashMap<>();
     HashMap<String, Beacon> nodeIDToBeacon =  new HashMap<String, Beacon>();
-    String nodeId;
     JSONObject description = null;
     List<String> myList = new ArrayList<>();
     // Map of beacon major to info string, major = beaconID
     HashMap<Integer, JSONObject> majorToInfo = new HashMap<>();
+    View view;
 
-    @SuppressLint("SetTextI18n")
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_art_in_area);
-        final DrawerLayout dl = (DrawerLayout)findViewById(R.id.activity_main);
-        final TextView debug = findViewById(R.id.debug);
-        artList = findViewById(R.id.artList);
-        artefacts = getIntent().getStringExtra("artefacts");
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        view = inflater.inflate(R.layout.fragment_art_in_area, container, false);
+        view.setBackgroundColor(Color.WHITE);
 
+        final TextView debug =  view.findViewById(R.id.debug);
+        artList = view.findViewById(R.id.artList);
+
+        //get artefact handed over
+        Bundle bundle = this.getArguments();
+        if (bundle != null) {
+            artefacts = bundle.getString("artefacts", "");
+        }
+        //parse the artefact
         try {
             description = new JSONObject(artefacts).getJSONObject("artefacts");
             Iterator<String> iterator = description.keys();
@@ -83,9 +84,9 @@ public class ArtInAreaActivity extends AppCompatActivity {
             e.printStackTrace();
         }
 
-        debug.setText("No Beacons found so far");
+        debug.setText("No Artefacts around");
 
-        beaconManager = new BeaconManager(this);
+        beaconManager = new BeaconManager(getActivity());
         beaconManager.setForegroundScanPeriod(1000, 0);
         region = new BeaconRegion("region",
                 UUID.fromString("B9407F30-F5F8-466E-AFF9-25556B57FE6D"), null, null);
@@ -97,7 +98,7 @@ public class ArtInAreaActivity extends AppCompatActivity {
                 myList.clear();
                 if (!detectedBeacons.isEmpty()) {
                     extractMapNodeIDToBID(detectedBeacons);
-                    //sortieren
+                    //sort beacons by distance via RSSI
                     final List<Integer> majorsSortedByDistance = sortBeacon(detectedBeacons);
 
                     Log.d("Beacon found", "Count" + detectedBeacons.size() );
@@ -114,22 +115,21 @@ public class ArtInAreaActivity extends AppCompatActivity {
                         new Thread(new Runnable() {
                             @Override
                             public void run() {
-
                                 try {
                                     final Object response = httpTask.get();
                                     String myResponse = response.toString();
                                     JSONObject description = null;
+                                    // parse information included in request response
                                     try {
                                         description = new JSONObject(myResponse).getJSONObject(nodeId);
                                         listItems.add(description.getString("short_desc"));
-                                        //myList = new ArrayList<>(listOfExhibitions);
                                         for(Integer beaconId : majorsSortedByDistance)  {
                                             String tmp = majorToInfo.get(beaconId).getString("short_desc");
                                             myList.add(tmp);
                                         }
-                                        ArtInAreaActivity.this.runOnUiThread(new Runnable() {
+                                        getActivity().runOnUiThread(new Runnable() {
                                             public void run() {
-                                                adapter = new ListAdapterView(ArtInAreaActivity.this, myList);
+                                                adapter = new ListAdapterView(getActivity(), myList);
                                                 artList.setAdapter(adapter);
                                             }
 
@@ -146,10 +146,10 @@ public class ArtInAreaActivity extends AppCompatActivity {
                         artList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                             @Override
                             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                                Toast.makeText(getApplicationContext(), "Item Clicked:" + i, Toast.LENGTH_SHORT).show();
-                                Intent intent = new Intent(getApplicationContext(), ShowArtefactActivity.class);
-                                intent.putExtra("artefact", nodes.get(i));
-                                startActivity(intent);
+                                Toast.makeText(getActivity().getApplicationContext(), "Item Clicked:" + i, Toast.LENGTH_SHORT).show();
+                                Bundle bundle = new Bundle();
+                                bundle.putString("artefact", Objects.toString(nodes.get(i)));
+                                ((MainActivity)getActivity()).loadFragment(new ShowArtefactFragment(), bundle);
                             }
                         });
                     }
@@ -157,7 +157,7 @@ public class ArtInAreaActivity extends AppCompatActivity {
                 myList.clear();
             }
         });
-
+        return view;
     }
 
     private void extractMapNodeIDToBID(List<Beacon> list) {
@@ -179,9 +179,9 @@ public class ArtInAreaActivity extends AppCompatActivity {
     }
 
     @Override
-    protected void onResume() {
+    public void onResume() {
         super.onResume();
-        SystemRequirementsChecker.checkWithDefaultDialogs(this);
+        SystemRequirementsChecker.checkWithDefaultDialogs(getActivity());
         beaconManager.connect(new BeaconManager.ServiceReadyCallback() {
             @Override
             public void onServiceReady() {
@@ -191,11 +191,12 @@ public class ArtInAreaActivity extends AppCompatActivity {
     }
 
     @Override
-    protected void onPause() {
+    public void onPause() {
         beaconManager.stopRanging(region);
         super.onPause();
     }
 
+    // Approximate the distance depending on the rssi and measured power
     protected Map<Integer, Double> getDistance(List nodeList) {
         Map<Integer, Double> BeaconMajorToDistance = new HashMap<>();
         double distance;
@@ -211,6 +212,7 @@ public class ArtInAreaActivity extends AppCompatActivity {
         return BeaconMajorToDistance;
     }
 
+    // sort the beacons by distance ascending
     protected LinkedList<Integer> sortBeacon(List nodeList) {
         Map<Integer, Double> beaconMajorToDistance = getDistance(nodeList);
         List<Double> distances = new ArrayList<>(beaconMajorToDistance.values());
@@ -232,7 +234,6 @@ public class ArtInAreaActivity extends AppCompatActivity {
 
         // sorting HashMap by values using comparator
         Collections.sort(listOfEntries, valueComparator);
-
         LinkedHashMap<Integer, Double> sortedByValue = new LinkedHashMap<Integer, Double>(listOfEntries.size());
 
         // copying entries from List to Map
@@ -245,7 +246,6 @@ public class ArtInAreaActivity extends AppCompatActivity {
         for(Integer major : sortedByValue.keySet()) {
             majorsSortedByDistance.add(major);
         }
-
         return majorsSortedByDistance;
     }
 }
